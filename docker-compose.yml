@@ -1,12 +1,8 @@
-version: '3.8'
-
 services:
-  # Laravel App (PHP-FPM)
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: laravel_api
     volumes:
       - ./backend:/var/www
     networks:
@@ -14,10 +10,8 @@ services:
     depends_on:
       - db
 
-  # Nginx Web Server for Laravel
   nginx:
     image: nginx:alpine
-    container_name: laravel_nginx
     ports:
       - "8000:80"
     volumes:
@@ -28,12 +22,10 @@ services:
     depends_on:
       - backend
 
-  # MySQL Database
   db:
     image: mysql:8.0
-    container_name: mysql_db
     environment:
-      MYSQL_DATABASE: laravel_db
+      MYSQL_DATABASE: vehicle_compare_db
       MYSQL_ROOT_PASSWORD: root_password
     ports:
       - "3306:3306"
@@ -42,12 +34,10 @@ services:
     networks:
       - app-network
 
-  # ReactJS Frontend
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: react_frontend
     ports:
       - "5173:5173"
     volumes:
